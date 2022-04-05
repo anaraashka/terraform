@@ -1,28 +1,28 @@
 # Create a VPC
 resource "aws_vpc" "Panasonic" {
     tags = {
-     Name = "Panasonic"
+     Name = var.tag
    }
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.vpc_cidr_b
 }
 
 # Create Public Subnet
 resource "aws_subnet" "public_subnet" {
   vpc_id     = aws_vpc.Panasonic.id
-  cidr_block = "10.0.1.0/24"
+  cidr_block = var.pub_subnet_cidr
 
   tags = {
-    Name = "Panasonic-Public-Subnet1"
+    Name = "${var.tag}-Public-Subnet1"
   }
 }
 
 # Create Private Subnet
 resource "aws_subnet" "private_subnet" {
   vpc_id     = aws_vpc.Panasonic.id
-  cidr_block = "10.0.2.0/24"
+  cidr_block = var.pri_subnet_cidr
 
   tags = {
-    Name = "Panasonic-Private-Subnet1"
+    Name = "${var.tag}-Private-Subnet1"
   }
 }
 
@@ -31,7 +31,7 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.Panasonic.id
 
   tags = {
-    Name = "Panasonic-GW"
+    Name = "${var.tag}-GW"
   }
 }
 
@@ -45,7 +45,7 @@ resource "aws_route_table" "Public-RT" {
   }
 
   tags = {
-    Name = "Panasonic-Public-RT"
+    Name = "${var.tag}-Public-RT"
   }
 }
 
@@ -54,7 +54,7 @@ resource "aws_default_route_table" "private-RT" {
   default_route_table_id = "${aws_vpc.Panasonic.default_route_table_id}"
 
   tags = {
-    Name = "Panasonic-Private-RT"
+    Name = "${var.tag}-Private-RT"
   }
 }
 
