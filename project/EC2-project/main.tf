@@ -60,7 +60,7 @@ resource "aws_route_table_association" "b" {
 }
 
 resource "aws_security_group" "allow_tls" {
-  name        = "allow_tls"
+  name        = "Panda-Security-Group"
   description = "Allow TLS inbound traffic"
   vpc_id      = aws_vpc.ec2_vpc.id
 
@@ -92,7 +92,7 @@ resource "aws_security_group" "allow_tls" {
   }
 
   tags = {
-    Name = "allow_tls"
+    Name = "Panda_allow_tls"
   }
 }
 
@@ -101,6 +101,7 @@ resource "aws_instance" "web_server" {
   ami           = data.aws_ami.amznlx2.id
   instance_type = "t2.micro"
   associate_public_ip_address = true
+  key_name = "ec2-key"
   user_data = file("user_data.sh")
   subnet_id = aws_subnet.public_subnet.id
   security_groups = [ aws_security_group.allow_tls.id ]
